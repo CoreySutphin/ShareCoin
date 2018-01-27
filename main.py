@@ -1,71 +1,82 @@
-from flask import Flask, request, render_template, redirect, url_for, session, g, flash
-from flask_social import Social
-from flask_oauth import OAuth
-import secrets.py import *
+from flask import Flask, request, render_template
+import requests
+import oauth2 as oauth
+import json
+import secrets
+import base64
 
 
 app = Flask(__name__)
-DEBUG = True
-app.debug = DEBUG
-app.secret_key = access_token_secret
+base_url = 'https://api.twitter.com/'
+auth_url = '{}oauth2/token'.format(base_url)
 
-oauth = OAuth()
+class access_token():
 
-twitter = oauth.remote_app('twitter',
-                    base_url='https://api.twitter.com/1/',
-                    request_token_url='https://api.twitter.com/oauth/request_token',
-                    access_token_url='https://api.twitter.com/oauth/access_token',
-                    authorize_url='https://api.twitter.com/oauth/authenticate',
-                    consumer_key = "D1Z6wJrdWHjlEOBb3r3Cmdqer",
-                    consumer_secret = " YgiPCKIRbdhKvQ3JtzzXGj0W4MaprBnhWaNoneWZ0bSmUzgFHk"
-                     )
+    def __int__(self, access_key):
+        self.key = access_key
 
-# app.config['SOCIAL_TWITTER'] = {
-#     'consuer_key' : ,
-#     'consumer_secret' : "YgiPCKIRbdhKvQ3JtzzXGj0W4MaprBnhWaNoneWZ0bSmUzgFHk"
-# }
+    def set_key(self, access_key):
+        self.key = access_key
 
-@twitter.tokengetter
-def get_twitter_token(token=None):
-    return session.get('twitter_token')
-app.config['SECURITY_POST_LOGIN'] = '/profile'
+TOKEN = access_token();
+
+def oauth_req():
+    key_secret = '{}:{}'.format(secrets.consumer_key, secrets.consumer_secret).encode('ascii')
+    b64_encoded_key = base64.b64encode(key_secret)
+    b64_encoded_key = b64_encoded_key.decode('ascii')
+
+    auth_headers = {
+        'Authorization' : 'Basic {}'.format(b64_encoded_key),
+        'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
+    }
+
+    auth_data = {
+        'grant_type' : 'client_credentials'
+    }
+    auth_resp = requests.post(auth_url, headers=auth_headers, data=auth_data)
+    if auth_resp.status_code == 200:
+        print('Success token received')
+        return auth_resp.json()['access_token']
+    else:
+        print('Token was not received')
+        print('Status Code: {} \n Error Code: {} Message: {} \n Key : {}'.format(auth_resp.status_code, auth_resp.json()['errors'][0]['code'], auth_resp.json()['errors'][0]['message'], b64_encoded_key))
+    return
 
 @app.route('/')
 def index():
-    access_token = session.get('access_token')
-    if access_token is None:
-        return redirect(url_for('login'))
-    access_token = access_token[0]
-    return  render_template('index.html', active="index")
+    return  render_template('login.html', active="login")
 
 @app.route('/login')
 def login():
-    return twitter.authorize(callback=url_for('oauth_authorized', next=request.args.get('next') or request.referrer or None))
+    TOKEN.set_key(oauth_req())
+    # print(access_token)
+    get_tweets('What3v3rTrevor')
+    return  render_template('index.html', active="index.html")
 
-@app.route('/logout')
-def logout():
-    session.pop('screen_name', None)
-    flash('You were signed out')
-    return redirect(request.referrer or url_for('index'))
+def get_tweets(user_handle):
+    # search_headers = {
+    #     'Authorization': 'Bearer {}'.format(TOKEN.key)
+    # }
+    # search_params = {
+    #     'user_id' : user_handle,
+    #     'exclude_replies' : False,
+    # }
+    search_headers = {
+        'Authorization': 'Bearer {}'.format(TOKEN.key)
+    }
 
-@app.route('/oauth-authorized')
-@twitter.authorized_handler
-def oauth_authorized(resp):
-    next_url = request.args.get('next') or url_for('index')
-    if resp is None:
-        flash(u'you denied the request to sign in.')
-        return redirect(next_url)
+    search_params = {
+        'q': 'General Election',
+        'result_type': 'recent',
+        'count': 2
+    }
 
-    access_token = resp['oauth_token']
-    session['access_token'] = access_token
-    session['screen_name'] = resp['screen_name']
+    search_url = '{}1.1/search/tweets.json'.format(base_url)
 
-    session['twitter_token'] = (
-        resp['oauth_token'],
-        resp['oauth_token_secret']
-    )
+    search_resp = requests.get(search_url, headers=search_headers, params=search_params)
 
-    return redirec(url_for('index'))
-
-if __name__ == '__main__':
-    app.run()
+    if search_resp.status_code == 200:
+        print(search_resp.json())
+    else:
+        print(search_resp.json())
+        print('Status Code: {} \n  Message: {}'.format(search_resp.status_code, search_resp.json()['error']))
