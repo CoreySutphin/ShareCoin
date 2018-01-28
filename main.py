@@ -93,6 +93,15 @@ def login():
     # print(access_token)
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
 
+@app.route('/home_page')
+def home_page():
+    return render_template('bounty.html')
+
+@app.route('/bounty', methods=["POST"])
+def bounty():
+    return render_template("home_page.html")
+
+
 def get_tweets(user_handle):
     # search_headers = {
     #     'Authorization': 'Bearer {}'.format(TOKEN.key)
