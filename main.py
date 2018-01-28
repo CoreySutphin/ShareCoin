@@ -7,7 +7,7 @@ import secrets
 import base64
 import boto3
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 #connection string for DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name ='us-east-1')
@@ -22,7 +22,6 @@ class access_token():
     def set_secret(self, secret_key):
         self.secret = secret_key
 
-app = Flask(__name__)
 my_access = access_token();
 base_url = 'https://api.twitter.com/'
 access_token_url = base_url + 'oauth/access_token'
@@ -73,21 +72,22 @@ def verify_user(verifier):
     screen_name = access_token['screen_name']
 
 
-@app.route('/')
+@application.route('/')
 def index():
     return render_template('login.html')
 
-@app.route('/home')
+@application.route('/home')
 def home():
-    if hasattr(my_access, 'key'):
+    if screen_name is None:
         access_token = verify_user( request.args.get('oauth_verifier'))
+    if hasattr(my_access, 'key'):
         # get_tweets(access_token)
-        return render_template('home_page.html', user_name='')
+        return render_template('home_page.html', user_name=screen_name)
     else:
         return redirect('/')
 
 
-@app.route('/login')
+@application.route('/login')
 def login():
     oauth_req()
     authorize_url = base_url + 'oauth/authenticate'
@@ -95,14 +95,14 @@ def login():
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
 
 
-@app.route('/bounty', methods=["POST", "GET"])
+@application.route('/bounty', methods=["POST", "GET"])
 def bounty():
     if(request.method == "POST"):
         return render_template("home_page.html")
     else:
         return render_template("bounty.html")
 
-@app.route('/creator', methods=["POST", "GET"])
+@application.route('/creator', methods=["POST", "GET"])
 def creator():
     return render_template('creator.html')
 
