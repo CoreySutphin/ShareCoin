@@ -16,13 +16,37 @@
     function burn(value, buttonId) {
       shareCoinInstance.burn(value, function(error, result){
       if(!error) {
-        console.log(result)
+        console.log(result);
         document.getElementById(buttonId).disabled = true;
       }
       else
         console.error(error);
     });
   }
+
+  /*
+    function createBounty() {
+      shareCoinInstance.createTwitterBounty(1000, 10, "https://twitter.com/What3v3rTrevor/status/957615605376569344", function(error, result){
+        if(!error) {
+          console.log(result);
+        }
+        else
+          console.error(error);
+        });
+      }
+      */
+
+
+    function payout() {
+      shareCoinInstance.payoutTwitterBounty("https://twitter.com/What3v3rTrevor/status/957615605376569344", function(error, result){
+        if(!error) {
+          console.log(result);
+        }
+        else
+          console.error(error);
+        });
+      }
+
   </script>
 
 {% endblock %}
@@ -37,6 +61,14 @@
           Look forward to tons of great merch from me on here! </p>
         <br> <br>
         <h2 class="text-center" style="color:orange;">Trevor's Bounties</h2>
+        <div class="center-text">
+          <blockquote class="twitter-tweet tw-align-center" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/alotlikebirds?ref_src=twsrc%5Etfw">@alotlikebirds</a>  is such a great band.</p>&mdash; Trevor Cohen (@What3v3rTrevor) <a href="https://twitter.com/What3v3rTrevor/status/957615605376569344?ref_src=twsrc%5Etfw">January 28, 2018</a></blockquote>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        <div class="center-text">
+          <a id="bountyButton" class="btn btn-warning" onclick="payout()">Earn 10 SHC</a>
+        </div>
+
       </div>
     </div>
     <br> <br>
@@ -44,13 +76,13 @@
       <div class="col-lg-12 center-text">
         <h2 class="text-center" style="color:orange;">Rewards!</h2>
 
-        <h5 class="text-center" style="color:white;">Hawk T-Shirt:     10 SCH</h5>
+        <h5 class="text-center" style="color:white;">Hawk T-Shirt:     10 SHC</h5>
         <div class="text-center">
           <a id="button1" class="btn btn-warning" onclick="burn(10, 'button1')">Purchase</a>
         </div>
         <br>
 
-        <h5 class="text-center"style="color:white;">My Childhood Binoculars:     50 SCH</h5>
+        <h5 class="text-center"style="color:white;">My Childhood Binoculars:     50 SHC</h5>
         <div class="text-center">
           <a id="button2" class="btn btn-warning" onclick="burn(10, 'button2')">Purchase</a>
         </div>
