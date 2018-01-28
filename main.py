@@ -9,7 +9,7 @@ import boto3
 
 application = Flask(__name__)
 
-#connection string for DynamoDB 
+#connection string for DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name ='us-east-1')
 table = dynamodb.Table('ShareBlocks')
 import urllib.parse
@@ -57,16 +57,15 @@ def oauth_req():
 
 def verify_user():
     consumer = oauth.Consumer(key=secrets.consumer_key, secret=secrets.consumer_secret)
-    access_token = oauth.Token(key=my_access.key, )
+    access_token = oauth.Token(key=my_access.key, secret=my_access.secret)
+    client = oauth.Client(consumer, access_token)
+    headers = {"Authorization" : "Bearer "}
 
-    auth_headers = {
-        'Authorization' : 'Basic {}'.format(b64_encoded_key),
-        'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'
-    }
-
-    auth_data = {
-        'grant_type' : 'client_credentials'
-    }
+    credentials_url = base_url + '1.1/account/verify_credentials.json'
+    resp, data = client.request(credentials_url, 'GET', body='', headers='None')
+    print(access_token)
+    print(resp)
+    print(data)
 
 
 @application.route('/')
@@ -84,6 +83,7 @@ def home():
 @application.route('/login')
 def login():
     oauth_req()
+    # verify_user()
     authorize_url = base_url + 'oauth/authenticate'
     # print(access_token)
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
