@@ -46,10 +46,8 @@ def oauth_req():
 
 @app.route('/')
 def index():
-    return  render_template('login.html', active="login")
+    return  render_template('index.html', active="login")
 
 @app.route('/login')
 def login():
-    tweets = oauth_req()
-    print(tweets)
     return  render_template('login.html', active="login")
