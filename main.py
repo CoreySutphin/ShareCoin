@@ -11,11 +11,11 @@ application = Flask(__name__)
 
 #connection string for DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name ='us-east-1')
-table = dynamodb.Table('ShareBlocks')
+table = dynamodb.Table('Users')
 import urllib.parse
 
 class access_token():
-    
+
     def set_key(self, access_key):
         self.key = access_key
 
