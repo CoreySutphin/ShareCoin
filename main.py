@@ -6,13 +6,13 @@ import json
 import secrets
 import base64
 import boto3
+import urllib.parse
 
 application = Flask(__name__)
 
 #connection string for DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name ='us-east-1')
 table = dynamodb.Table('Users')
-import urllib.parse
 
 class access_token():
 
@@ -96,7 +96,7 @@ def bounty():
     else:
         return render_template("bounty.html")
 
-@app.route('/creator', methods=["POST", "GET"])
+@application.route('/creator', methods=["POST", "GET"])
 def creator():
     return render_template('creator.html')
 
