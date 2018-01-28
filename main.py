@@ -70,7 +70,7 @@ def index():
 @app.route('/home')
 def home():
     if hasattr(my_access, 'key'):
-        return render_template('index.html', user_name='')
+        return render_template('home_page.html', user_name='')
     else:
         return redirect('/')
 
@@ -82,13 +82,13 @@ def login():
     # print(access_token)
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
 
-@app.route('/home_page')
-def home_page():
-    return render_template('bounty.html')
 
-@app.route('/bounty', methods=["POST"])
+@app.route('/bounty', methods=["POST", "GET"])
 def bounty():
-    return render_template("home_page.html")
+    if(request.method == "POST"):
+        return render_template("home_page.html")
+    else:
+        return render_template("bounty.html")
 
 
 def get_tweets(user_handle):

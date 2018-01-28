@@ -80,13 +80,3 @@ var contractAbi = [ { "constant": true, "inputs": [], "name": "name", "outputs":
 
 var shareCoinContract = web3.eth.contract(contractAbi);
 var shareCoinInstance = shareCoinContract.at(contactAddress);
-
-var accounts = web3.eth.accounts;
-var userBalance = shareCoinInstance.balanceOf(accounts[0], function(error, result){
-  if(!error)
-    console.log(result)
-  else
-    console.error(error);
-});
-
-console.log(userBalance);
