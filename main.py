@@ -5,6 +5,13 @@ import oauth2 as oauth
 import json
 import secrets
 import base64
+import boto3
+
+app = Flask(__name__)
+
+#connection string for DynamoDB 
+dynamodb = boto3.resource('dynamodb', region_name ='us-east-1')
+table = dynamodb.Table('ShareBlocks')
 import urllib.parse
 
 class access_token():
@@ -81,6 +88,15 @@ def login():
     authorize_url = base_url + 'oauth/authenticate'
     # print(access_token)
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
+
+@app.route('/home_page')
+def home_page():
+    return render_template('bounty.html')
+
+@app.route('/bounty', methods=["POST"])
+def bounty():
+    return render_template("home_page.html")
+
 
 def get_tweets(user_handle):
     # search_headers = {
