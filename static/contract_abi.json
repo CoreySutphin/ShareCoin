@@ -127,6 +127,10 @@
 			{
 				"name": "eachPayout",
 				"type": "uint32"
+			},
+			{
+				"name": "bountyCreater",
+				"type": "address"
 			}
 		],
 		"payable": false,
@@ -209,33 +213,6 @@
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "urlToBounty",
-		"outputs": [
-			{
-				"name": "shareCoinInBounty",
-				"type": "uint32"
-			},
-			{
-				"name": "eachPayout",
-				"type": "uint32"
-			},
-			{
-				"name": "uniqueURL",
-				"type": "bytes32"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
@@ -310,7 +287,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "Burn",
+		"name": "TokensBurned",
 		"type": "event"
 	},
 	{
