@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect
 from web3 import Web3, HTTPProvider
 import requests
-import oauth2
+import oauth2 as oauth
 import json
 import secrets
 import base64
@@ -33,8 +33,8 @@ shareCoinContract = web3.eth.contract(address=contract_address, abi=abi)
 def oauth_req():
     request_token_url = base_url + 'oauth/request_token'
     access_token_url = base_url + 'oauth/access_token'
-    consumer = oauth2.Consumer(secrets.consumer_key, secrets.consumer_secret)
-    client = oauth2.Client(consumer)
+    consumer = oauth.Consumer(secrets.consumer_key, secrets.consumer_secret)
+    client = oauth.Client(consumer)
     resp, content = client.request(request_token_url, 'GET')
 
     if resp['status'] != '200':
@@ -50,9 +50,8 @@ def oauth_req():
     return request_token['oauth_token']
 
 def verify_user():
-    key_secret = '{}:{}'.format(secrets.consumer_key, secrets.consumer_secret).encode('ascii')
-    b64_encoded_key = base64.b64encode(key_secret)
-    b64_encoded_key = b64_encoded_key.decode('ascii')
+    consumer = oauth.Consumer(key=secrets.consumer_key, secret=secrets.consumer_secret)
+    access_token = oauth.Token(key=my_access.key, )
 
     auth_headers = {
         'Authorization' : 'Basic {}'.format(b64_encoded_key),
