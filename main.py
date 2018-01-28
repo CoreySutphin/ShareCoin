@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template
-from flask_bootstrap import Bootstrap
 from web3 import Web3, HTTPProvider
 import requests
 import oauth2 as oauth
@@ -8,7 +7,6 @@ import secrets
 import base64
 
 app = Flask(__name__)
-Bootstrap(app)
 
 # Set up to interact with the Ropsten Ethereum test network
 web3 = Web3(HTTPProvider('https://ropsten.infura.io/TUBXa5ntAP9rtqdhFQNE'))
@@ -68,6 +66,15 @@ def login():
     # print(access_token)
     get_tweets('What3v3rTrevor')
     return  render_template('login.html', active="login.html")
+
+@app.route('/home_page')
+def home_page():
+    return render_template('bounty.html')
+
+@app.route('/bounty', methods=["POST"])
+def bounty:
+    return render_template("home_page.html")
+
 
 def get_tweets(user_handle):
     # search_headers = {
