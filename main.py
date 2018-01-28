@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, session
 from web3 import Web3, HTTPProvider
 import requests
 import oauth2 as oauth
@@ -15,9 +15,6 @@ table = dynamodb.Table('ShareBlocks')
 import urllib.parse
 
 class access_token():
-    def __int__(self, access_key, secret_key):
-        self.key = access_key
-        self.secret = secret_key
 
     def set_key(self, access_key):
         self.key = access_key
@@ -28,6 +25,10 @@ class access_token():
 app = Flask(__name__)
 my_access = access_token();
 base_url = 'https://api.twitter.com/'
+access_token_url = base_url + 'oauth/access_token'
+consumer = oauth.Consumer(secrets.consumer_key, secrets.consumer_secret)
+client = oauth.Client(consumer)
+screen_name = ''
 
 # Set up to interact with the Ropsten Ethereum test network
 web3 = Web3(HTTPProvider('https://ropsten.infura.io/TUBXa5ntAP9rtqdhFQNE'))
@@ -39,14 +40,13 @@ shareCoinContract = web3.eth.contract(address=contract_address, abi=abi)
 
 def oauth_req():
     request_token_url = base_url + 'oauth/request_token'
-    access_token_url = base_url + 'oauth/access_token'
-    consumer = oauth.Consumer(secrets.consumer_key, secrets.consumer_secret)
-    client = oauth.Client(consumer)
+
     resp, content = client.request(request_token_url, 'GET')
 
     if resp['status'] != '200':
         raise Exception("Invalid response {}".format(resp['status']))
 
+    print('Token acquired! Success!')
     request_token = dict(urllib.parse.parse_qsl(content.decode('UTF-8')))
     print(request_token)
     print("Request Token:")
@@ -54,19 +54,23 @@ def oauth_req():
     print("    - oauth_token_secret = %s" % request_token['oauth_token_secret'])
     my_access.set_key(request_token['oauth_token'])
     my_access.set_secret(request_token['oauth_token_secret'])
-    return request_token['oauth_token']
+    return
 
-def verify_user():
-    consumer = oauth.Consumer(key=secrets.consumer_key, secret=secrets.consumer_secret)
+def verify_user(verifier):
+    # consumer = oauth.Consumer(key=secrets.consumer_key, secret=secrets.consumer_secret)
     access_token = oauth.Token(key=my_access.key, secret=my_access.secret)
+    access_token.set_verifier(verifier)
     client = oauth.Client(consumer, access_token)
-    headers = {"Authorization" : "Bearer "}
 
-    credentials_url = base_url + '1.1/account/verify_credentials.json'
-    resp, data = client.request(credentials_url, 'GET', body='', headers='None')
+    resp, content = client.request(access_token_url, 'GET')
+    if resp['status'] != '200':
+        print(content)
+        raise Exception("Invalid response {}".format(resp['status']))
+
+    print('Success!...')
+    access_token = dict(urllib.parse.parse_qsl(content.decode('UTF-8')))
     print(access_token)
-    print(resp)
-    print(data)
+    screen_name = access_token['screen_name']
 
 
 @app.route('/')
@@ -76,7 +80,9 @@ def index():
 @app.route('/home')
 def home():
     if hasattr(my_access, 'key'):
-        return render_template('index.html', user_name='')
+        access_token = verify_user( request.args.get('oauth_verifier'))
+        # get_tweets(access_token)
+        return render_template('index.html', user_name=screen_name)
     else:
         return redirect('/')
 
@@ -84,7 +90,6 @@ def home():
 @app.route('/login')
 def login():
     oauth_req()
-    # verify_user()
     authorize_url = base_url + 'oauth/authenticate'
     # print(access_token)
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
@@ -94,30 +99,15 @@ def bounty():
     return render_template("home_page.html")
 
 
-def get_tweets(user_handle):
-    # search_headers = {
-    #     'Authorization': 'Bearer {}'.format(TOKEN.key)
-    # }
-    # search_params = {
-    #     'user_id' : user_handle,
-    #     'exclude_replies' : False,
-    # }
-    search_headers = {
-        'Authorization': 'Bearer {}'.format(TOKEN.key)
-    }
+def get_tweets(token):
+    search_url = base_url +  '1.1/statuses/home_timeline.json'
+    resp, content = client.request(search_url, token, headers=header, )
+    results = dict(urllib.parse.parse_qsl(content.decode('UTF-8')))
 
-    search_params = {
-        'q': 'General Election',
-        'result_type': 'recent',
-        'count': 2
-    }
-
-    search_url = '{}1.1/search/tweets.json'.format(base_url)
-
-    search_resp = requests.get(search_url, headers=search_headers, params=search_params)
-
-    if search_resp.status_code == 200:
+    if resp['status'] == '200':
         print('Success search response was successful')
+        print(results)
     else:
-        print(search_resp.json())
-        print('Status Code: {} \n  Message: {}'.format(search_resp.status_code, search_resp.json()['error']))
+        print(content)
+        print("Response Code : {}".format(resp['status']))
+        print(results)
