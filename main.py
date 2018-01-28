@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, redirect
 from web3 import Web3, HTTPProvider
 import requests
-import oauth
 import oauth2
 import json
 import secrets
