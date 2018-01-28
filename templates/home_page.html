@@ -20,12 +20,25 @@
 
   <div class="row">
     <div class="col-lg-12 center-text">
-      <h1 class="text-center">Welcome to ShareBlocks!</h1>
+      <h1 class="text-center" style="color:white;">Welcome to ShareBlocks!</h1>
     </div>
-    <div class="col-lg-6">
-        <h2 id="balance">ShareCoin Balance:</h2>
-        <a id="submitButton" class="btn btn-primary" href="{{ url_for('bounty') }}">Create a bounty</a>
+    <div class="col-lg-6 text-center">
+        <h2 id="balance" style="color:white">ShareCoin Balance:</h2>
+    </div>
+    <div class="col-lg-6 text-center">
+      <h2 style="color:white;">Your favorite creators</h2>
+      <div class="text-center">
+        <a id="creatorButton" class="btn btn-warning" href="{{ url_for('creator') }}">Trevor Pedgen</a>
+      </div>
     </div>
   </div>
+  <br> <br>
+  <div class="row">
+    <div id="bountyContainer" class="col-lg-12 center-text">
+        <h2 class="text-center" style="color:white;">Your bounties</h1>
+          <div class="text-center">
+            <a id="submitButton" class="btn btn-warning" href="{{ url_for('bounty') }}">Create a bounty</a>
+          </div>
+    </div>
 </div>
 {% endblock %}

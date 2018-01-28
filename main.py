@@ -97,6 +97,10 @@ def bounty():
     else:
         return render_template("bounty.html")
 
+@app.route('/creator', methods=["POST", "GET"])
+def creator():
+    return render_template('creator.html')
+
 
 def get_tweets(user_handle):
     # search_headers = {

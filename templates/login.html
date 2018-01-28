@@ -6,18 +6,9 @@
     {% if session['screen_name'] %}
       Hello {{ session['screen_name'] }}!
   {% else %}
-<<<<<<< HEAD
-    <p>
-      Sign in with twitter.
-    <p>
-      <a href="{{ url_for('login') }}"><img src="{{
-        url_for('static', filename='twitter_login.png') }}" alt="sign in"></a>
-  {% endif %}
 
-  <div class="container">
-=======
   <div class="container" style: "margin: 0 auto;">
->>>>>>> master
+
     	<div class="row">
 			<div class="col-md-6" style="float:none; margin:0 auto;">
 				<div class="panel panel-login">
