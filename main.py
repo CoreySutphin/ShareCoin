@@ -1,14 +1,17 @@
 from flask import Flask, request, render_template
-from flask_bootstrap import Bootstrap
 from web3 import Web3, HTTPProvider
 import requests
 import oauth2 as oauth
 import json
 import secrets
 import base64
+import boto3
 
 app = Flask(__name__)
-Bootstrap(app)
+
+#connection string for DynamoDB 
+dynamodb = boto3.resource('dynamodb', region_name ='us-east-1')
+table = dynamodb.Table('ShareBlocks')
 
 # Set up to interact with the Ropsten Ethereum test network
 web3 = Web3(HTTPProvider('https://ropsten.infura.io/TUBXa5ntAP9rtqdhFQNE'))
@@ -34,7 +37,7 @@ class access_token():
     def set_key(self, access_key):
         self.key = access_key
 
-TOKEN = access_token();
+TOKEN = access_token()
 
 def oauth_req():
     key_secret = '{}:{}'.format(secrets.consumer_key, secrets.consumer_secret).encode('ascii')
