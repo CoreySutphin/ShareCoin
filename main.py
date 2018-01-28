@@ -9,7 +9,7 @@ import boto3
 
 app = Flask(__name__)
 
-#connection string for DynamoDB 
+#connection string for DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name ='us-east-1')
 table = dynamodb.Table('ShareBlocks')
 import urllib.parse
@@ -88,10 +88,6 @@ def login():
     authorize_url = base_url + 'oauth/authenticate'
     # print(access_token)
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
-
-@app.route('/home_page')
-def home_page():
-    return render_template('bounty.html')
 
 @app.route('/bounty', methods=["POST"])
 def bounty():
