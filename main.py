@@ -91,7 +91,7 @@ def home_page():
     return render_template('bounty.html')
 
 @app.route('/bounty', methods=["POST"])
-def bounty:
+def bounty():
     return render_template("home_page.html")
 
 
