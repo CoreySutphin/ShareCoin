@@ -11,8 +11,10 @@ app = Flask(__name__)
 
 #connection string for DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name ='us-east-1')
-table = dynamodb.Table('ShareBlocks')
+table = dynamodb.Table('Users')
 import urllib.parse
+
+users = {}
 
 class access_token():
     def __int__(self, access_key, secret_key):
@@ -25,7 +27,6 @@ class access_token():
     def set_secret(self, secret_key):
         self.secret = secret_key
 
-app = Flask(__name__)
 my_access = access_token();
 base_url = 'https://api.twitter.com/'
 
@@ -33,7 +34,7 @@ base_url = 'https://api.twitter.com/'
 web3 = Web3(HTTPProvider('https://ropsten.infura.io/TUBXa5ntAP9rtqdhFQNE'))
 with open('./static/contract_abi.json', 'r') as abi_definition:
     abi = json.load(abi_definition)
-contract_address = '0xb021e99D2dAce09C0fd8e50234f55775Fa8F3627'
+contract_address = '0xb9091F9B7415D221FB0BD870c2a342EA97401611'
 web3.eth.defaultAccount = "0xAbfD6e20bC0a7ea9b47C1310345625cc2Fd28b61"
 shareCoinContract = web3.eth.contract(address=contract_address, abi=abi)
 
@@ -76,7 +77,10 @@ def index():
 @app.route('/home')
 def home():
     if hasattr(my_access, 'key'):
-        return render_template('home_page.html', user_name='')
+        if "Trevor Pidgen" in users:
+            return render_template('home_page.html', url=users["Trevor Pidgen"])
+        else:
+            return render_template('home_page.html')
     else:
         return redirect('/')
 
@@ -86,13 +90,15 @@ def login():
     oauth_req()
     # verify_user()
     authorize_url = base_url + 'oauth/authenticate'
-    # print(access_token)
+    # print(access_tokentable.put_item(Item = {'username': 'Trevor Pidgen', 'url': url }))
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
 
 
-@app.route('/bounty', methods=["POST", "GET"])
+@app.route('/bounty', methods=["GET", "POST"])
 def bounty():
-    if(request.method == "POST"):
+    if request.method == "POST":
+        url = request.form['url']
+        users["Trevor Pedgen"] = url
         return render_template("home_page.html")
     else:
         return render_template("bounty.html")
