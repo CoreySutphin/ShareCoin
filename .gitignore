@@ -1,3 +1,4 @@
 secrets.py
 please-work.ppk
-__pycache__/*
+__pycache__
+*.pyc
