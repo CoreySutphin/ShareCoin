@@ -7,21 +7,22 @@ import "./StandardToken.sol";
 contract ShareCoin is StandardToken {
 
     // This notifies clients about the amount burnt
-    event Burn(address indexed from, uint256 value);
+    event TokensBurned(address indexed from, uint256 value);
     // Notifies the clients when a Twitter Bounty is successfully created
     event TwitterBountyCreated(address creatorAddress, uint256 value);
-    //Notifies the clients when a Twitter Bounty is successfully paid out
+    // Notifies the clients when a Twitter Bounty is successfully paid out
     event TwitterBountyPaidOut(address paidOutTo, uint256 amountPaidOut);
 
     struct Bounty {
         uint32 shareCoinInBounty;
         uint32 eachPayout;
         bytes32 uniqueURL;
+        address bountyCreater;
+        string tweetID;
     }
 
-    //Array of K,V with URL of tweet as Key, the bounty as value
-    mapping(bytes32 => Bounty) public urlToBounty;
-
+    // Array of K,V with URL of tweet as Key, the bounty as value
+    mapping(bytes32 => Bounty) internal urlToBounty;
 
     /* Public variables of the token */
     string public name;                   //fancy name: eg Simon Bucks
@@ -29,7 +30,7 @@ contract ShareCoin is StandardToken {
     string public symbol;                 //An identifier: eg SBX
     address private owner;
 
-    function ShareCoin() {
+    function ShareCoin() public {
         owner = msg.sender;
         balances[owner] = 10000000;               // Give the creator all initial tokens (100000 for example)
         totalSupply = 10000000;                        // Update total supply (100000 for example)
@@ -43,7 +44,6 @@ contract ShareCoin is StandardToken {
         throw;
     }
 
-
     /**
      * Destroy tokens
      *
@@ -55,10 +55,9 @@ contract ShareCoin is StandardToken {
         require(balances[msg.sender] >= _value);   // Check if the sender has enough
         balances[msg.sender] -= _value;            // Subtract from the sender
         totalSupply -= _value;                      // Updates totalSupply
-        Burn(msg.sender, _value);
+        TokensBurned(msg.sender, _value);
         return true;
     }
-
 
     // Creates an instance of a Bounty
     // @param _totalBounty How many total SHCs the bounty is worth
@@ -80,7 +79,7 @@ contract ShareCoin is StandardToken {
             balances[msg.sender] -= _totalBountyValue;
 
             //creates a new bounty with a unique URL
-            Bounty memory newBounty = Bounty(_totalBountyValue, _eachPayout, urlAsHash);
+            Bounty memory newBounty = Bounty(_totalBountyValue, _eachPayout, urlAsHash, msg.sender, _uniqueURL);
 
             //adds the new bounty as a value to a map of bounties with creator address as key
             urlToBounty[urlAsHash] = newBounty;
@@ -115,4 +114,15 @@ contract ShareCoin is StandardToken {
         return true;
     }
 
+    // Call function returns a particular bounty's balance and payout amount
+    function getBounty(string _uniqueURL) public view
+        returns(uint32 shareCoinInBounty, uint32 eachPayout, address bountyCreater) {
+            //converts @param _uniqueURL to bytes32 hash
+            bytes32 urlAsHash = keccak256(_uniqueURL);
+
+            //Stores a local reference to the bounty to return
+            Bounty memory bountyToReturn = urlToBounty[urlAsHash];
+
+            return(bountyToReturn.shareCoinInBounty, bountyToReturn.eachPayout, bountyToReturn.bountyCreater);
+        }
 }
