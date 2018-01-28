@@ -15,10 +15,7 @@ table = dynamodb.Table('ShareBlocks')
 import urllib.parse
 
 class access_token():
-    def __init__(self, access_key, secret_key):
-        self.key = access_key
-        self.secret = secret_key
-
+    
     def set_key(self, access_key):
         self.key = access_key
 
