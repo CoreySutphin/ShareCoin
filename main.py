@@ -97,7 +97,7 @@ def login():
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
 
 
-@app.route('/bounty', methods=["GET", "POST"])
+@application.route('/bounty', methods=["GET", "POST"])
 def bounty():
     if request.method == "POST":
         url = request.form['url']
