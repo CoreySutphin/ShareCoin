@@ -68,6 +68,8 @@ def verify_user(verifier):
 
     print('Success!...')
     access_token = dict(urllib.parse.parse_qsl(content.decode('UTF-8')))
+    my_access.set_key(access_token['oauth_token'])
+    my_access.set_secret(access_token['oauth_token_secret'])
     print(access_token)
     screen_name = access_token['screen_name']
 
@@ -79,9 +81,9 @@ def index():
 @application.route('/home')
 def home():
     if screen_name is None:
-        access_token = verify_user( request.args.get('oauth_verifier'))
+        verify_user( request.args.get('oauth_verifier'))
     if hasattr(my_access, 'key'):
-        # get_tweets(access_token)
+        get_tweets(request.args.get('oauth_verifier'))
         return render_template('home_page.html', user_name=screen_name)
     else:
         return redirect('/')
@@ -107,15 +109,18 @@ def creator():
     return render_template('creator.html')
 
 
-def get_tweets(token):
+def get_tweets(verifier):
+    access_token = oauth.Token(key=my_access.key, secret=my_access.secret)
+    access_token.set_verifier(verifier)
+    client = oauth.Client(consumer, access_token)
     search_url = base_url +  '1.1/statuses/home_timeline.json'
-    resp, content = client.request(search_url, token, headers=header, )
+    resp, content = client.request(search_url, 'GET')
     results = dict(urllib.parse.parse_qsl(content.decode('UTF-8')))
 
     if resp['status'] == '200':
         print('Success search response was successful')
         print(results)
     else:
+        print(resp)
         print(content)
         print("Response Code : {}".format(resp['status']))
-        print(results)
