@@ -1,6 +1,3 @@
 secrets.py
 please-work.ppk
-__pycahce__/main.cpython-36.pyc
-__pycache__/secrets.cpython-36.pyc
-__pycache__/secrets.cpython-37.pyc
-__pycache__/main.cpython-36.pyc
+__pycache__/*
