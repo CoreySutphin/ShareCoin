@@ -13,11 +13,11 @@
     {% endblock %}
   </head>
 
-    <body style = "background-color: #f7faff">
-      <div class = "container" style= "background-color:white; padding-left: 0px; padding-right: 0px">
-      <div class = "container" style="padding-left: 0; padding-right:0;">
-        <nav class="navbar navbar-inverse" style ="background-color: #5301a5">
-          <a class="navbar-brand" href="#" style="color:white">ShareBlocks</a>
+    <body style = "background-color: #f7faff; background-image: url('../static/images/home_page2.png')">
+      <!--<div class = "container" style= "background-color:white; padding-left: 0px; padding-right: 0px; background-image: url('../static/images/home_page1.jpg');">
+      <div class = "container" style="padding-left: 0; padding-right:0;">-->
+        <nav class="navbar navbar-expand" style ="background-color: #5301a5">
+          <a class="navbar-brand" href="" style="color:white">ShareBlocks</a>
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
               <a class="nav-link" href="{{ url_for('home')}}" style="color: white;">Home <span class="sr-only">(current)</span></a>
@@ -26,12 +26,9 @@
               <a class="nav-link" href="#"></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="#">Disabled</a>
-            </li>-->
-          </ul>
-          <form action = "{{ url_for('login')}}" class="form-inline my-2 my-lg-0">
-            <button class="btn btn-secondary" type="submit" style="border-color: white; color: white; background-color:#5301a5 ">Login</button>
-          </form>
+              <a class="nav-link" href="#"style="color: white;">Account</a>
+            </li>
+          </ul>-->
         </nav>
       </div>
         {% block content %}
