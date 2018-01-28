@@ -14,7 +14,7 @@ if (typeof web3 !== 'undefined') {
 });
 
 // Loads our contracts abi and then uses it to get access to our deployed contract.
-var contactAddress = '0xd1549e0e7b4d6fb320a5377c618d4f3d20385f27';
+var contactAddress = "0xb9091F9B7415D221FB0BD870c2a342EA97401611" ;
 
 var contractAbi = [ { "constant": true, "inputs": [], "name": "name", "outputs": [ { "name": "",
   "type": "string" } ], "payable": false, "stateMutability": "view", "type":
