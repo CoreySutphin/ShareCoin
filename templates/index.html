@@ -6,6 +6,14 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!--<link rel="stylesheet" type="text/css" href="..\static\stylesheets\styles.css" />-->
+    <script type="text/javascript" src="./static/web3.min.js"></script>
+    <script type="text/javascript" src="./static/require.js"></script>
+
+    <script type="text/javascript">
+      var Web3 = require('web3');
+      var web3 = new Web3();
+      web3.setProvider(new web3.providers.HttpProvider("https://ropsten.infura.io/TUBXa5ntAP9rtqdhFQNE"));
+    </script>
     {% endblock %}
   </head>
     <body style = "background-color: #f7faff">
