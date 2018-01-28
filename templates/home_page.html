@@ -2,15 +2,43 @@
 {% block title %}Home{% endblock %}
 {% block head %}
   {{ super() }}
-  <script type="text/javascript" src="./static/web3.min.js"></script>
-  <script type="text/javascript" src="./static/require.js"></script>
+  <script type="text/javascript">
+    var accounts = web3.eth.accounts;
+    shareCoinInstance.balanceOf(accounts[0], function(error, result){
+    if(!error) {
+      console.log(result)
+      document.getElementById("balance").innerHTML = "ShareCoin Balance: " + result;
+    }
+    else
+      console.error(error);
+  });
+
+  </script>
 {% endblock %}
 {% block content %}
- <h1 class = "center">Welcome to ShareBlocks</h1>
+<div class="container">
 
- <div class="row">
-   <div class="col-lg-12">
-
-   </div>
- </div>
+  <div class="row">
+    <div class="col-lg-12 center-text">
+      <h1 class="text-center" style="color:white;">Welcome to ShareBlocks!</h1>
+    </div>
+    <div class="col-lg-6 text-center">
+        <h2 id="balance" style="color:white">ShareCoin Balance:</h2>
+    </div>
+    <div class="col-lg-6 text-center">
+      <h2 style="color:white;">Your favorite creators</h2>
+      <div class="text-center">
+        <a id="creatorButton" class="btn btn-warning" href="{{ url_for('creator') }}">Trevor Pedgen</a>
+      </div>
+    </div>
+  </div>
+  <br> <br>
+  <div class="row">
+    <div id="bountyContainer" class="col-lg-12 center-text">
+        <h2 class="text-center" style="color:white;">Your bounties</h1>
+          <div class="text-center">
+            <a id="submitButton" class="btn btn-warning" href="{{ url_for('bounty') }}">Create a bounty</a>
+          </div>
+    </div>
+</div>
 {% endblock %}
