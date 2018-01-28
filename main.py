@@ -65,7 +65,7 @@ def login():
     TOKEN.set_key(oauth_req())
     # print(access_token)
     get_tweets('What3v3rTrevor')
-    return  render_template('index.html', active="index.html")
+    return  render_template('login.html', active="login.html")
 
 def get_tweets(user_handle):
     # search_headers = {
