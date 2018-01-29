@@ -14,65 +14,65 @@ if (typeof web3 !== 'undefined') {
 });
 
 // Loads our contracts abi and then uses it to get access to our deployed contract.
-var contactAddress = "0xb9091F9B7415D221FB0BD870c2a342EA97401611" ;
+var contactAddress = "0x1438c09982BcAdFB681d9c7528C63eaDC1eD707b" ;
 
 var contractAbi = [ { "constant": true, "inputs": [], "name": "name", "outputs": [ { "name": "",
-  "type": "string" } ], "payable": false, "stateMutability": "view", "type":
-  "function" }, { "constant": false, "inputs": [ { "name": "_spender", "type":
-  "address" }, { "name": "_value", "type": "uint256" } ], "name": "approve",
-  "outputs": [ { "name": "success", "type": "bool" } ], "payable": false,
-  "stateMutability": "nonpayable", "type": "function" }, { "constant": true,
-  "inputs": [], "name": "totalSupply", "outputs": [ { "name": "", "type":
-  "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, {
-  "constant": false, "inputs": [ { "name": "_from", "type": "address" }, { "name":
-  "_to", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name":
-  "transferFrom", "outputs": [ { "name": "success", "type": "bool" } ], "payable":
-  false, "stateMutability": "nonpayable", "type": "function" }, { "constant":
-  true, "inputs": [], "name": "decimals", "outputs": [ { "name": "", "type":
-  "uint8" } ], "payable": false, "stateMutability": "view", "type": "function" }, {
-  "constant": false, "inputs": [ { "name": "_value", "type": "uint256" } ],
-  "name": "burn", "outputs": [ { "name": "success", "type": "bool" } ], "payable":
-  false, "stateMutability": "nonpayable", "type": "function" }, { "constant":
-  true, "inputs": [ { "name": "_uniqueURL", "type": "string" } ], "name":
-  "getBounty", "outputs": [ { "name": "shareCoinInBounty", "type": "uint32" }, {
-  "name": "eachPayout", "type": "uint32" }, { "name": "bountyCreater", "type":
-  "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, {
-  "constant": false, "inputs": [ { "name": "_uniqueURL", "type": "string" } ],
-  "name": "payoutTwitterBounty", "outputs": [ { "name": "", "type": "bool" } ],
-  "payable": false, "stateMutability": "nonpayable", "type": "function" }, {
-  "constant": true, "inputs": [ { "name": "_owner", "type": "address" } ], "name":
-  "balanceOf", "outputs": [ { "name": "balance", "type": "uint256" } ], "payable":
-  false, "stateMutability": "view", "type": "function" }, { "constant": true,
-  "inputs": [], "name": "symbol", "outputs": [ { "name": "", "type": "string" } ],
-  "payable": false, "stateMutability": "view", "type": "function" }, { "constant":
-  false, "inputs": [ { "name": "_to", "type": "address" }, { "name": "_value",
-  "type": "uint256" } ], "name": "transfer", "outputs": [ { "name": "success",
-  "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type":
-  "function" }, { "constant": false, "inputs": [ { "name": "_totalBountyValue",
-  "type": "uint32" }, { "name": "_eachPayout", "type": "uint32" }, { "name":
-  "_uniqueURL", "type": "string" } ], "name": "createTwitterBounty", "outputs": [ {
-  "name": "success", "type": "bool" } ], "payable": false, "stateMutability":
-  "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name":
-  "_owner", "type": "address" }, { "name": "_spender", "type": "address" } ],
-  "name": "allowance", "outputs": [ { "name": "remaining", "type": "uint256" } ],
-  "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [],
-  "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, {
-  "payable": false, "stateMutability": "nonpayable", "type": "fallback" }, {
-  "anonymous": false, "inputs": [ { "indexed": true, "name": "from", "type":
-  "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name":
-  "TokensBurned", "type": "event" }, { "anonymous": false, "inputs": [ {
-  "indexed": false, "name": "creatorAddress", "type": "address" }, { "indexed":
-  false, "name": "value", "type": "uint256" } ], "name": "TwitterBountyCreated",
-  "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "name":
-  "paidOutTo", "type": "address" }, { "indexed": false, "name": "amountPaidOut",
-  "type": "uint256" } ], "name": "TwitterBountyPaidOut", "type": "event" }, {
-  "anonymous": false, "inputs": [ { "indexed": true, "name": "_from", "type":
-  "address" }, { "indexed": true, "name": "_to", "type": "address" }, { "indexed":
-  false, "name": "_value", "type": "uint256" } ], "name": "Transfer", "type":
-  "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name":
-  "_owner", "type": "address" }, { "indexed": true, "name": "_spender", "type":
-  "address" }, { "indexed": false, "name": "_value", "type": "uint256" } ],
-  "name": "Approval", "type": "event" } ]
+"type": "string" } ], "payable": false, "stateMutability": "view", "type":
+"function" }, { "constant": false, "inputs": [ { "name": "_spender", "type":
+"address" }, { "name": "_value", "type": "uint256" } ], "name": "approve",
+"outputs": [ { "name": "success", "type": "bool" } ], "payable": false,
+"stateMutability": "nonpayable", "type": "function" }, { "constant": true,
+"inputs": [], "name": "totalSupply", "outputs": [ { "name": "", "type":
+"uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, {
+"constant": false, "inputs": [ { "name": "_from", "type": "address" }, { "name":
+"_to", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name":
+"transferFrom", "outputs": [ { "name": "success", "type": "bool" } ], "payable":
+false, "stateMutability": "nonpayable", "type": "function" }, { "constant":
+true, "inputs": [], "name": "decimals", "outputs": [ { "name": "", "type":
+"uint8" } ], "payable": false, "stateMutability": "view", "type": "function" }, {
+"constant": false, "inputs": [ { "name": "_value", "type": "uint256" } ],
+"name": "burn", "outputs": [ { "name": "success", "type": "bool" } ], "payable":
+false, "stateMutability": "nonpayable", "type": "function" }, { "constant":
+true, "inputs": [ { "name": "_uniqueURL", "type": "string" } ], "name":
+"getBounty", "outputs": [ { "name": "shareCoinInBounty", "type": "uint32" }, {
+"name": "eachPayout", "type": "uint32" }, { "name": "bountyCreater", "type":
+"address" } ], "payable": false, "stateMutability": "view", "type": "function" }, {
+"constant": false, "inputs": [ { "name": "_uniqueURL", "type": "string" } ],
+"name": "payoutTwitterBounty", "outputs": [ { "name": "", "type": "bool" } ],
+"payable": false, "stateMutability": "nonpayable", "type": "function" }, {
+"constant": true, "inputs": [ { "name": "_owner", "type": "address" } ], "name":
+"balanceOf", "outputs": [ { "name": "balance", "type": "uint256" } ], "payable":
+false, "stateMutability": "view", "type": "function" }, { "constant": true,
+"inputs": [], "name": "symbol", "outputs": [ { "name": "", "type": "string" } ],
+"payable": false, "stateMutability": "view", "type": "function" }, { "constant":
+false, "inputs": [ { "name": "_to", "type": "address" }, { "name": "_value",
+"type": "uint256" } ], "name": "transfer", "outputs": [ { "name": "success",
+"type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type":
+"function" }, { "constant": false, "inputs": [ { "name": "_totalBountyValue",
+"type": "uint32" }, { "name": "_eachPayout", "type": "uint32" }, { "name":
+"_uniqueURL", "type": "string" } ], "name": "createTwitterBounty", "outputs": [ {
+"name": "success", "type": "bool" } ], "payable": false, "stateMutability":
+"nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name":
+"_owner", "type": "address" }, { "name": "_spender", "type": "address" } ],
+"name": "allowance", "outputs": [ { "name": "remaining", "type": "uint256" } ],
+"payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [],
+"payable": false, "stateMutability": "nonpayable", "type": "constructor" }, {
+"payable": false, "stateMutability": "nonpayable", "type": "fallback" }, {
+"anonymous": false, "inputs": [ { "indexed": true, "name": "from", "type":
+"address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name":
+"TokensBurned", "type": "event" }, { "anonymous": false, "inputs": [ {
+"indexed": false, "name": "creatorAddress", "type": "address" }, { "indexed":
+false, "name": "value", "type": "uint256" } ], "name": "TwitterBountyCreated",
+"type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "name":
+"paidOutTo", "type": "address" }, { "indexed": false, "name": "amountPaidOut",
+"type": "uint256" } ], "name": "TwitterBountyPaidOut", "type": "event" }, {
+"anonymous": false, "inputs": [ { "indexed": true, "name": "_from", "type":
+"address" }, { "indexed": true, "name": "_to", "type": "address" }, { "indexed":
+false, "name": "_value", "type": "uint256" } ], "name": "Transfer", "type":
+"event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name":
+"_owner", "type": "address" }, { "indexed": true, "name": "_spender", "type":
+"address" }, { "indexed": false, "name": "_value", "type": "uint256" } ],
+"name": "Approval", "type": "event" } ]
 
 var shareCoinContract = web3.eth.contract(contractAbi);
 var shareCoinInstance = shareCoinContract.at(contactAddress);

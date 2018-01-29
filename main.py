@@ -35,7 +35,7 @@ screen_name = ''
 web3 = Web3(HTTPProvider('https://ropsten.infura.io/TUBXa5ntAP9rtqdhFQNE'))
 with open('./static/contract_abi.json', 'r') as abi_definition:
     abi = json.load(abi_definition)
-contract_address = '0xb9091F9B7415D221FB0BD870c2a342EA97401611'
+contract_address = '0x1438c09982BcAdFB681d9c7528C63eaDC1eD707b'
 web3.eth.defaultAccount = "0xAbfD6e20bC0a7ea9b47C1310345625cc2Fd28b61"
 shareCoinContract = web3.eth.contract(address=contract_address, abi=abi)
 
