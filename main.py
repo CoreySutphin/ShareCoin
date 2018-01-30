@@ -15,12 +15,12 @@ table = dynamodb.Table('ShareBlocks')
 import urllib.parse
 
 class access_token():
-
     def set_key(self, access_key):
         self.key = access_key
-
     def set_secret(self, secret_key):
         self.secret = secret_key
+    def set_token(self, token):
+        self.token = token
 
 my_access = access_token();
 base_url = 'https://api.twitter.com/'
@@ -39,26 +39,28 @@ shareCoinContract = web3.eth.contract(address=contract_address, abi=abi)
 
 def oauth_req():
     request_token_url = base_url + 'oauth/request_token'
-
     resp, content = client.request(request_token_url, 'GET')
-
     if resp['status'] != '200':
         raise Exception("Invalid response {}".format(resp['status']))
-
     print('Token acquired! Success!')
     request_token = dict(urllib.parse.parse_qsl(content.decode('UTF-8')))
     print(request_token)
     print("Request Token:")
     print("    - oauth_token        = %s" % request_token['oauth_token'])
     print("    - oauth_token_secret = %s" % request_token['oauth_token_secret'])
-    my_access.set_key(request_token['oauth_token'])
-    my_access.set_secret(request_token['oauth_token_secret'])
+    key = request_token['oauth_token']
+    secret = request_token['oauth_token_secret']
+    access_token = oauth.Token(key=key, secret=secret)
+    my_access.set_key(key)
+    my_access.set_secret(secret)
+    my_access.set_token(access_token)
     return
 
 def verify_user(verifier):
     # consumer = oauth.Consumer(key=secrets.consumer_key, secret=secrets.consumer_secret)
-    access_token = oauth.Token(key=my_access.key, secret=my_access.secret)
+    access_token = my_access.token
     access_token.set_verifier(verifier)
+    my_access.token = access_token
     client = oauth.Client(consumer, access_token)
 
     resp, content = client.request(access_token_url, 'GET')
@@ -68,22 +70,36 @@ def verify_user(verifier):
 
     print('Success!...')
     access_token = dict(urllib.parse.parse_qsl(content.decode('UTF-8')))
-    my_access.set_key(access_token['oauth_token'])
-    my_access.set_secret(access_token['oauth_token_secret'])
+    # my_access.set_key(access_token['oauth_token'])
+    # my_access.set_secret(access_token['oauth_token_secret'])
     print(access_token)
-    screen_name = access_token['screen_name']
+    key = access_token['oauth_token']
+    secret = access_token['oauth_token_secret']
+    my_access.set_key(key)
+    my_access.set_secret(secret)
+    my_access.token = oauth.Token(key=key, secret=secret)
+    return
+
+    # screen_name = access_token['screen_name']
 
 
 @application.route('/')
 def index():
     return render_template('login.html')
+# YOU LEFT
+#           OFF
+#                   HERE
+#                           TREVOR
+#
 
-@application.route('/home')
+@application.route('/home', methods=['GET'])
 def home():
-    if screen_name is None:
-        verify_user( request.args.get('oauth_verifier'))
-    if hasattr(my_access, 'key'):
-        get_tweets(request.args.get('oauth_verifier'))
+    if request.method == 'GET':
+        verifier = request.args.get('oauth_verifier')
+        print("Oauth Verifier : {}".format(verifier))
+        verify_user(verifier)
+        home_timeline = get_user_timeline()
+        print(home_timeline)
         return render_template('home_page.html', user_name=screen_name)
     else:
         return redirect('/')
@@ -93,7 +109,6 @@ def home():
 def login():
     oauth_req()
     authorize_url = base_url + 'oauth/authenticate'
-    # print(access_token)
     return  redirect(authorize_url + '?oauth_token=' + my_access.key)
 
 
@@ -109,18 +124,12 @@ def creator():
     return render_template('creator.html')
 
 
-def get_tweets(verifier):
-    access_token = oauth.Token(key=my_access.key, secret=my_access.secret)
-    access_token.set_verifier(verifier)
-    client = oauth.Client(consumer, access_token)
-    search_url = base_url +  '1.1/statuses/home_timeline.json'
-    resp, content = client.request(search_url, 'GET')
-    results = dict(urllib.parse.parse_qsl(content.decode('UTF-8')))
+def get_home_timeline(url='https://api.twitter.com/1.1/statuses/home_timeline.json', http_method="GET", post_body=b"", http_headers=None):
+    client = oauth.Client(consumer, my_access.token)
+    resp, content = client.request(url, method=http_method, body=post_body, headers=http_headers)
+    return content
 
-    if resp['status'] == '200':
-        print('Success search response was successful')
-        print(results)
-    else:
-        print(resp)
-        print(content)
-        print("Response Code : {}".format(resp['status']))
+def get_user_timeline(url='https://api.twitter.com/1.1/statuses/user_timeline.json', http_method="GET", post_body=b"", http_headers=None):
+    client = oauth.Client(consumer, my_access.token)
+    resp, content = client.request(url, method=http_method, body=post_body, headers=http_headers)
+    return content
