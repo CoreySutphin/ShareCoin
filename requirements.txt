@@ -11,7 +11,7 @@ eth-keys==0.1.0b4
 eth-tester==0.1.0b15
 eth-utils==0.7.4
 Flask==0.12.2
-httplib2==0.10.3
+httplib2==0.18.0
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.10
